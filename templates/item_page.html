@@ -2,9 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ item.name }} - Buy</title>
 </head>
 <body>
+    <h2>{{ item.name }}</h2>
+    <p>{{ item.description }}</p>
+    <p>Price: ${{ item.price }}</p>
+    <button id="buyButton">Buy</button>
 
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var buyButton = document.getElementById('buyButton');
+        buyButton.addEventListener('click', function () {
+            fetch('/buy/{{ item.id }}')
+                .then(response => response.json())
+                .then(session => {
+                    var stripe = Stripe('pk_test_51OHoz3DNJ4DCuIPtk2T6ea0C4FVVq5q0Yk8o4yK46UNo0HRZHSjGINHAa7D3UhHo72fQTDhDuLQq6FCGkSVCihUJ00rNGQaJPk');
+                    return stripe.redirectToCheckout({ sessionId: session.session_id });
+                })
+                .then(result => {
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
 </body>
 </html>
