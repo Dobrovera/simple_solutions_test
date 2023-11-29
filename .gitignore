@@ -1,0 +1,7 @@
+.env
+venv
+.idea/
+app/__pycache__/
+dist/
+*.pyc
+static/
