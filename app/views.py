@@ -9,6 +9,7 @@ from .models import Item
 
 load_dotenv()
 stripe.api_key = getenv('STRIPE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = getenv('STRIPE_PUBLIC_KEY')
 
 
 def get_buy_session_id(request, id):
@@ -62,4 +63,5 @@ def get_item_page(request, id):
     item = get_object_or_404(Item, pk=id)
 
     # Отображение HTML-страницы с информацией о товаре
-    return render(request, 'item_page.html', {'item': item})
+    return render(request, 'item_page.html', {'item': item,
+                                              'stripe_public_key': STRIPE_PUBLIC_KEY})
